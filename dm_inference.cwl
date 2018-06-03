@@ -28,7 +28,7 @@ arguments: [run,
  --net=none,
  --name=$(inputs.docker_container_name),
  $(inputs.docker_image_reference),
- /sc1_infer.sh]
+ $(inputs.entry_point)]
 
 
 requirements:

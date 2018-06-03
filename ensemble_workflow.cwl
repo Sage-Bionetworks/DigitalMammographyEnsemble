@@ -17,8 +17,8 @@ requirements:
 # TODO instead of specifying an 'output_folder' let Toil create it
 # TODO how do we allocate the two sets of resources (CPUs, GPUs, etc.) on a worker machine?
 steps:
-  sc1:
-    run: dm_sc1.cwl
+  inference:
+    run: dm_inference.cwl
     scatter: value
     in:
       docker_image_reference: models
