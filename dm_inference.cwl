@@ -46,8 +46,6 @@ inputs:
     type: string
   scratch_folder:
     type: string
-  output_folder:
-    type: string
   cpu_set:
     type: string
   first_gpu_device:
@@ -67,9 +65,8 @@ outputs:
   predictions:
     type: File
     outputBinding:
-      glob: $(inputs.output_folder)/predictions.tsv
+      glob: predictions.tsv
   predictions_exams:
     type: File
     outputBinding:
-      glob: $(inputs.output_folder)/predictions_exams.tsv
-
+      glob: predictions_exams.tsv
