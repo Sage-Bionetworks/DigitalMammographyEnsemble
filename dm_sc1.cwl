@@ -64,5 +64,8 @@ inputs:
 
 # TODO let Toil set up the output folder
 outputs:
-  inferences: $(inputs.output_folder)/predictions.txt
+  inferences:
+    type: File
+    outputBinding:
+      glob: $(inputs.output_folder)/predictions.tsv
 
