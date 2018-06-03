@@ -63,10 +63,13 @@ inputs:
   docker_registry_auth:
     type: string
 
-# TODO let Toil set up the output folder
 outputs:
-  inferences:
+  predictions:
     type: File
     outputBinding:
       glob: $(inputs.output_folder)/predictions.tsv
+  predictions_exams:
+    type: File
+    outputBinding:
+      glob: $(inputs.output_folder)/predictions_exams.tsv
 
