@@ -14,7 +14,7 @@ arguments: [run,
  --volume=$(inputs.images_data_folder):/inferenceData:ro,
  --volume=$(inputs.images_crosswalk_tsv):/metadata/images_crosswalk.tsv:ro,
  --volume=$(inputs.exams_metadata):/metadata/exams_metadata.tsv:ro,
- --volume=$(inputs.output_folder):/output:rw,
+ --volume=$(inputs.host_workdir)/$((runtime.outdir).split('/').slice(-1)[0]):/output:rw,
  --volume=$(inputs.scratch_folder):/scratch:rw,
  --volume=nvidia_driver_384.59:/usr/local/nvidia:ro,
  --device=/dev/nvidiactl:/dev/nvidiactl:rw,
@@ -38,6 +38,7 @@ requirements:
       - entryname: .docker/config.json
         entry: |
           {"auths": {"$(inputs.docker_registry)": {"auth": "$(inputs.docker_registry_auth)"}}}
+  InlineJavascriptRequirement
 
 inputs:
   images_data_folder:

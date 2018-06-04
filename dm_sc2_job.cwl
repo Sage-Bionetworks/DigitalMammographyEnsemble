@@ -3,6 +3,7 @@ images_data_folder:
 images_crosswalk_tsv: 
 exams_metadata: 
 scratch_folder: 
+host_workdir:
 
 entry_point: /sc2_infer.sh
 
