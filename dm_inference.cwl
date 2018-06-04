@@ -38,12 +38,12 @@ arguments:
   - valueFrom:  $(inputs.entry_point)
 
 requirements:
-  InitialWorkDirRequirement:
+  - class: InitialWorkDirRequirement
     listing:
       - entryname: .docker/config.json
         entry: |
           {"auths": {"$(inputs.docker_registry)": {"auth": "$(inputs.docker_registry_auth)"}}}
-  InlineJavascriptRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
   images_data_folder:
