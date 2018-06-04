@@ -2,35 +2,35 @@
 cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: docker
-arguments: [run,
- -i,
- --env="GPUS=$(inputs.first_gpu_device);$(inputs.second_gpu_device)",
- --env="NUM_GPU_DEVICES=2",
- --env="NUM_CPU_CORES=15",
- --env="MEMORY_GB=200",
- --env="RANDOM_SEED=12345",
- --env="WALLTIME_MINUTES=20160",
- --volume-driver=nvidia-docker,
- --volume=$(inputs.images_data_folder):/inferenceData:ro,
- --volume=$(inputs.images_crosswalk_tsv):/metadata/images_crosswalk.tsv:ro,
- --volume=$(inputs.exams_metadata):/metadata/exams_metadata.tsv:ro,
- --volume=$(inputs.host_workdir)/$((runtime.outdir).split('/').slice(-1)[0]):/output:rw,
- --volume=$(inputs.scratch_folder):/scratch:rw,
- --volume=nvidia_driver_384.59:/usr/local/nvidia:ro,
- --device=/dev/nvidiactl:/dev/nvidiactl:rw,
- --device=/dev/nvidia-uvm:/dev/nvidia-uvm:rw,
- --device=$(inputs.first_gpu_device):$(inputs.first_gpu_device):rw,
- --device=$(inputs.second_gpu_device):$(inputs.second_gpu_device):rw,
- --log-opt, max-file=2,
- --log-opt, max-size=1g,
- --cpuset-cpus, $(inputs.cpu_set),
- --memory, 200g,
- --memory-swap, 0m,
- --net=none,
- --name=$(inputs.docker_container_name),
- $(inputs.docker_image_reference),
- $(inputs.entry_point)]
-
+arguments: 
+  - valueFrom: run
+  - valueFrom:  -i
+  - valueFrom:  --env="GPUS=$(inputs.first_gpu_device);$(inputs.second_gpu_device)"
+  - valueFrom:  --env="NUM_GPU_DEVICES=2"
+  - valueFrom:  --env="NUM_CPU_CORES=15"
+  - valueFrom:  --env="MEMORY_GB=200"
+  - valueFrom:  --env="RANDOM_SEED=12345"
+  - valueFrom:  --env="WALLTIME_MINUTES=20160"
+  - valueFrom:  --volume-driver=nvidia-docker
+  - valueFrom:  --volume=$(inputs.images_data_folder):/inferenceData:ro
+  - valueFrom:  --volume=$(inputs.images_crosswalk_tsv):/metadata/images_crosswalk.tsv:ro
+  - valueFrom:  --volume=$(inputs.exams_metadata):/metadata/exams_metadata.tsv:ro
+  - valueFrom:  --volume=$(inputs.host_workdir)/$((runtime.outdir).split('/').slice(-1)[0]):/output:rw
+  - valueFrom:  --volume=$(inputs.scratch_folder):/scratch:rw
+  - valueFrom:  --volume=nvidia_driver_384.59:/usr/local/nvidia:ro
+  - valueFrom:  --device=/dev/nvidiactl:/dev/nvidiactl:rw
+  - valueFrom:  --device=/dev/nvidia-uvm:/dev/nvidia-uvm:rw
+  - valueFrom:  --device=$(inputs.first_gpu_device):$(inputs.first_gpu_device):rw
+  - valueFrom:  --device=$(inputs.second_gpu_device):$(inputs.second_gpu_device):rw
+  - valueFrom:  --log-opt, max-file=2
+  - valueFrom:  --log-opt, max-size=1g
+  - valueFrom:  --cpuset-cpus, $(inputs.cpu_set)
+  - valueFrom:  --memory 200g
+  - valueFrom:  --memory-swap 0m
+  - valueFrom:  --net=none
+  - valueFrom:  --name=$(inputs.docker_container_name)
+  - valueFrom:  $(inputs.docker_image_reference)
+  - valueFrom:  $(inputs.entry_point)
 
 requirements:
   InitialWorkDirRequirement:

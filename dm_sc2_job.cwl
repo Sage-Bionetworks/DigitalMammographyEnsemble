@@ -1,14 +1,14 @@
 # These are paths on the host machine
-images_data_folder: 
-images_crosswalk_tsv: 
-exams_metadata: 
-scratch_folder: 
-host_workdir:
+images_data_folder: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
+images_crosswalk_tsv: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_images_crosswalk.tsv
+exams_metadata: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_exams_metadata.tsv
+scratch_folder: /data/scratch0
+host_workdir: /home/dreamuser/DigitalMammographyEnsemble
 
 entry_point: /sc2_infer.sh
 
-docker_image_reference: docker.synapse.org/syn7887972/9650260/scoring@sha256:a8f660e2b33e0759cb679e2dcfab53ab51120eeec8e16b1d2a29060812d024b7
-
+docker_image_reference: docker.synapse.org/syn7887972/9650243/scoring@sha256:3ccbf3acf43d1e84c79028aa562e6f68cc6d20271a3b37b8168316d71ad44168
+13c13
 docker_registry: docker.synapse.org
 docker_registry_auth: 
 
