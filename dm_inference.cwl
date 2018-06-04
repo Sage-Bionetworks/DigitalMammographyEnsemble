@@ -17,9 +17,10 @@ arguments:
   - valueFrom: --volume=$(inputs.exams_metadata):/metadata/exams_metadata.tsv:ro
   - valueFrom: --volume=$(inputs.host_workdir)/$((runtime.outdir).split('/').slice(-1)[0]):/output:rw
   - valueFrom: --volume=$(inputs.scratch_folder):/scratch:rw
-  - valueFrom: --volume=nvidia_driver_384.59:/usr/local/nvidia:ro
+  - valueFrom: --volume=nvidia_driver_396.26:/usr/local/nvidia:ro
   - valueFrom: --device=/dev/nvidiactl:/dev/nvidiactl:rw
   - valueFrom: --device=/dev/nvidia-uvm:/dev/nvidia-uvm:rw
+  - valueFrom: --device=/dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools:rw
   - valueFrom: --device=$(inputs.first_gpu_device):$(inputs.first_gpu_device):rw
   - valueFrom: --device=$(inputs.second_gpu_device):$(inputs.second_gpu_device):rw
   - valueFrom: --log-opt
