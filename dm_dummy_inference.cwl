@@ -8,7 +8,7 @@ arguments:
     prefix: -i
   - valueFrom: $(inputs.exams_metadata)
     prefix: -e
-  - valueFrom: $(inputs.value)
+  - valueFrom: $(inputs.model.weight)
     prefix: -v
 
 inputs:
@@ -16,8 +16,14 @@ inputs:
     type: string
   exams_metadata:
     type: string
-  value:
-    type: float
+  model:
+    type:
+      type: record
+      fields:
+        - name: name
+          type: string
+        - name: weight
+          type: float  
 
 outputs:
   predictions:

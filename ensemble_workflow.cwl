@@ -15,7 +15,6 @@ requirements:
  - class: ScatterFeatureRequirement
 
 # TODO instead of specifying an 'output_folder' let Toil create it
-# TODO how do we allocate the two sets of resources (CPUs, GPUs, etc.) on a worker machine?
 steps:
   inference:
     run: dm_inference.cwl
