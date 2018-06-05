@@ -1,4 +1,4 @@
-model:
+models:
   - name: model1
     weight: 0.50
   - name: model2

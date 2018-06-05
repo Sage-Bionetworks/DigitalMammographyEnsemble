@@ -2,40 +2,73 @@
 cwlVersion: v1.0
 class: Workflow
 
-# input is an array of Docker references
 inputs:
-  models: string[][]
+  models:
+    type:
+      type: array
+      items:
+        type: record
+        fields:
+          - name: name
+            type: string
+          - name: weight
+            type: float
+          - name: docker_reference
+            type: string
 
 outputs:
-  result:
+  - id: ensemble_predictions
     type: File
-    outputSource: aggregate/agg_out
+    outputSource: aggregate/ensemble_predictions
+  - id: ensemble_predictions_exams
+    type: File
+    outputSource: aggregate/ensemble_predictions_exams
 
 requirements:
  - class: ScatterFeatureRequirement
 
-# TODO instead of specifying an 'output_folder' let Toil create it
 steps:
   inference:
     run: dm_inference.cwl
-    scatter: value
+    scatter: model
     in:
-      docker_image_reference: models
-      images_data_folder: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
-      images_crosswalk_tsv: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_images_crosswalk.tsv
-      exams_metadata: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_exams_metadata.tsv
-      scratch_folder: /data/scratch0
-      host_workdir: /home/dreamuser/DigitalMammographyEnsemble
-      docker_registry: docker.synapse.org
-      docker_registry_auth: fill-in-base64-encoded-user-colon-password
-      docker_container_name: cwl-sc2
-      first_gpu_device: /dev/nvidia0
-      second_gpu_device: /dev/nvidia1
-      cpu_set: 1-15
-    out: [incr_out]
-
+      - id: docker_image_reference
+        source: models
+      - id: images_data_folder
+        valueFrom: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
+      - id: images_crosswalk_tsv
+        valueFrom: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_images_crosswalk.tsv
+      - id: exams_metadata
+        valueFrom: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_exams_metadata.tsv
+      - id: scratch_folder
+        valueFrom: /data/scratch0
+      - id: host_workdir
+        valueFrom: /home/dreamuser/DigitalMammographyEnsemble
+      - id: docker_registry
+        valueFrom: docker.synapse.org
+      - id: docker_registry_auth
+        valueFrom: fill-in-base64-encoded-user-colon-password
+      - id: docker_container_name
+        valueFrom: cwl-sc2
+      - id: first_gpu_device
+        valueFrom: /dev/nvidia0
+      - id: second_gpu_device
+        valueFrom: /dev/nvidia1
+      - id: cpu_set
+        valueFrom: 1-15
+    out:
+      - id: predictions
+      - id: predictions_exams
+      
   aggregate:
-    run:  aggregation_tool.cwl
+    run:  dummy_aggregation_tool.cwl
     in:
-      value: inference/inferences
-    out: [agg_out]
+      - id: models
+        source: "#model"
+      - id: predictions
+        source: "#inference/predictions"
+      - id: predictions_exams
+        source: "#inference/predictions_exams"
+    out:
+      - id: ensemble_predictions
+      - id: ensemble_predictions_exams

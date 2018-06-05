@@ -2,9 +2,8 @@
 cwlVersion: v1.0
 class: Workflow
 
-
 inputs:
-  model:
+  models:
     type:
       type: array
       items:
@@ -31,12 +30,12 @@ steps:
     run: dm_dummy_inference.cwl
     scatter: model
     in:
-      images_crosswalk_tsv: 
+      - id: images_crosswalk_tsv
         valueFrom: '/workdir/SC2_single_subject_images_crosswalk.tsv'
-      exams_metadata: 
+      - id: exams_metadata
         valueFrom: '/workdir/SC2_single_subject_exams_metadata.tsv'
-      model: 
-        source: "#model"
+      - id: model
+        source: "#models"
     out:
       - id: predictions
       - id: predictions_exams
