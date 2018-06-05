@@ -7,13 +7,12 @@ class: CommandLineTool
 baseCommand: /workdir/dummy_aggregation.py
 arguments:
   - valueFrom: $(inputs.models)
-    prefix: -i
+    prefix: -m
   - valueFrom: $(inputs.predictions)
     prefix: -p
+  - valueFrom: $(inputs.predictions_exams)
+    prefix: -e
     
-stdout: agg_out.txt
-
-
 inputs:
   - id: models
     type:
@@ -35,9 +34,13 @@ inputs:
       items: File
 
 outputs:
-  - id: agg_out
+  - id: ensemble_predictions
     type: File
     outputBinding:
-      glob: agg_out.txt
+      glob: ensemble_predictions.tsv
+  - id: ensemble_predictions_exams
+    type: File
+    outputBinding:
+      glob: ensemble_predictions_exams.tsv
 
 

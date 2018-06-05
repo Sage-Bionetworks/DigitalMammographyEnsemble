@@ -16,9 +16,12 @@ inputs:
             type: float
           
 outputs:
-  result:
+  - id: ensemble_predictions
     type: File
-    outputSource: aggregate/agg_out
+    outputSource: aggregate/ensemble_predictions
+  - id: ensemble_predictions_exams
+    type: File
+    outputSource: aggregate/ensemble_predictions_exams
 
 requirements:
  - class: ScatterFeatureRequirement
@@ -48,4 +51,6 @@ steps:
       - id: predictions_exams
         source: "#inference/predictions_exams"
     out:
-      - id: agg_out
+      - id: ensemble_predictions
+      - id: ensemble_predictions_exams
+
