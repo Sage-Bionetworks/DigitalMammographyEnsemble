@@ -79,6 +79,8 @@ inputs:
     type: string
   - id: host_workdir
     type: string
+  - id: entry_point
+    type: string
 
 outputs:
   predictions:

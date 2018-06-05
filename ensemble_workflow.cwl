@@ -56,6 +56,8 @@ steps:
         valueFrom: /dev/nvidia1
       - id: cpu_set
         valueFrom: 1-15
+      - id: entry_point
+        valueFrom: /sc2_infer.sh
     out:
       - id: predictions
       - id: predictions_exams
