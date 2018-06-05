@@ -44,7 +44,7 @@ steps:
     run:  dummy_aggregation_tool.cwl
     in:
       - id: models
-        source: "#model"
+        source: "#models"
       - id: predictions
         source: "#inference/predictions"
       - id: predictions_exams

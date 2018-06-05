@@ -30,10 +30,10 @@ requirements:
 steps:
   inference:
     run: dm_inference.cwl
-    scatter: model
+    scatter: docker_image_reference
     in:
       - id: docker_image_reference
-        source: models
+        source: "#models/docker_reference"
       - id: images_data_folder
         valueFrom: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
       - id: images_crosswalk_tsv
@@ -64,7 +64,7 @@ steps:
     run:  dummy_aggregation_tool.cwl
     in:
       - id: models
-        source: "#model"
+        source: "#models"
       - id: predictions
         source: "#inference/predictions"
       - id: predictions_exams
