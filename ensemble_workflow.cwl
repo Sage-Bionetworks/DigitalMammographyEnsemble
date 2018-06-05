@@ -48,8 +48,8 @@ steps:
         valueFrom: docker.synapse.org
       - id: docker_registry_auth
         valueFrom: fill-in-base64-encoded-user-colon-password
-      - id: docker_container_name
-        valueFrom: cwl-sc2
+      - id: docker_container_prefix
+        valueFrom: dm
       - id: first_gpu_device
         valueFrom: /dev/nvidia0
       - id: second_gpu_device

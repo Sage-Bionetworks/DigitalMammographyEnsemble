@@ -34,8 +34,8 @@ arguments:
   - valueFrom: --memory-swap
   - valueFrom: 0m
   - valueFrom: --net=none
-  - valueFrom: --name=$(inputs.docker_container_name)
-  - valueFrom:  $(inputs.docker_image_reference)
+  - valueFrom: --name=$(inputs.docker_container_prefix)-$(inputs.model.name)
+  - valueFrom:  $(inputs.model.docker_reference)
   - valueFrom:  $(inputs.entry_point)
 
 requirements:
@@ -47,29 +47,36 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
-  images_data_folder:
+  - id: model
+    type: record
+    fields:
+      - name: name
+        type: string
+      - name: weight
+        type: float
+      - name: docker_reference
+        type: string
+  - id: images_data_folder
     type: string
-  images_crosswalk_tsv:
+  - id: images_crosswalk_tsv
     type: string
-  exams_metadata:
+  - id: exams_metadata
     type: string
-  scratch_folder:
+  - id: scratch_folder
     type: string
-  cpu_set:
+  - id: cpu_set
     type: string
-  first_gpu_device:
+  - id: first_gpu_device
     type: string
-  second_gpu_device:
+  - id: second_gpu_device
     type: string
-  docker_image_reference:
+  - id: docker_container_prefix
     type: string
-  docker_container_name:
+  - id: docker_registry
     type: string
-  docker_registry:
+  - id: docker_registry_auth
     type: string
-  docker_registry_auth:
-    type: string
-  host_workdir:
+  - id: host_workdir
     type: string
 
 outputs:
