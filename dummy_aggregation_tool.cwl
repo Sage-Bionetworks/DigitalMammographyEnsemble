@@ -4,7 +4,7 @@
 #
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: dummy_aggregation.py
+baseCommand: /workdir/dummy_aggregation.py
 arguments:
   - valueFrom: $(inputs.models)
     prefix: -i
@@ -15,7 +15,7 @@ stdout: agg_out.txt
 
 
 inputs:
-  models:
+  - id: models
     type:
       type: array
       items:
@@ -25,11 +25,14 @@ inputs:
             type: string
           - name: weight
             type: float
-    predictions:
-      type:
-        type: array
-        items:
-          type: File
+  - id: predictions
+    type:
+      type: array
+      items: File
+  - id: predictions_exams
+    type:
+      type: array
+      items: File
 
 outputs:
   - id: agg_out

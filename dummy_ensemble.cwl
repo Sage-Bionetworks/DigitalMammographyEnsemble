@@ -45,5 +45,7 @@ steps:
         source: "#model"
       - id: predictions
         source: "#inference/predictions"
+      - id: predictions_exams
+        source: "#inference/predictions_exams"
     out:
       - id: agg_out
