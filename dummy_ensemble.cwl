@@ -34,10 +34,16 @@ steps:
         valueFrom: '/workdir/SC2_single_subject_exams_metadata.tsv'
       model: 
         source: "#model"
-    out: [predictions, predictions_exams]
+    out:
+      - id: predictions
+      - id: predictions_exams
 
   aggregate:
-    run:  aggregation_tool.cwl
+    run:  dummy_aggregation_tool.cwl
     in:
-      value: inference/predictions
-    out: [agg_out]
+      - id: models
+        source: "#model"
+      - id: predictions
+        source: "#inference/predictions"
+    out:
+      - id: agg_out
