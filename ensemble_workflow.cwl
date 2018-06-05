@@ -30,10 +30,10 @@ requirements:
 steps:
   inference:
     run: dm_inference.cwl
-    scatter: docker_image_reference
+    scatter: model
     in:
-      - id: docker_image_reference
-        source: "#models/docker_reference"
+      - id: model
+        source: "#models"
       - id: images_data_folder
         valueFrom: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
       - id: images_crosswalk_tsv
