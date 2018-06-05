@@ -49,14 +49,14 @@ requirements:
 inputs:
   - id: model
     type:
-	    type: record
-	    fields:
-	      - name: name
-	        type: string
-	      - name: weight
-	        type: float
-	      - name: docker_reference
-	        type: string
+      type: record
+      fields:
+        - name: name
+          type: string
+        - name: weight
+          type: float
+        - name: docker_reference
+          type: string
   - id: images_data_folder
     type: string
   - id: images_crosswalk_tsv
