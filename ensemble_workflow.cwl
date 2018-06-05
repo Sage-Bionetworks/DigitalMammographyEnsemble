@@ -4,7 +4,7 @@ class: Workflow
 
 # input is an array of Docker references
 inputs:
-  models: string[]
+  models: string[][]
 
 outputs:
   result:
@@ -22,13 +22,14 @@ steps:
     scatter: value
     in:
       docker_image_reference: models
-      images_data_folder: /data/data/dm_grouphealth/dcm/SC2_test
-      images_crosswalk_tsv: /data/data/dm_grouphealth/metadata/SC2_test_images_crosswalk.tsv
-      scratch_folder: /data/scratch0/
-      output_folder: /data/inference0/
+      images_data_folder: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
+      images_crosswalk_tsv: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_images_crosswalk.tsv
+      exams_metadata: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_exams_metadata.tsv
+      scratch_folder: /data/scratch0
+      host_workdir: /home/dreamuser/DigitalMammographyEnsemble
       docker_registry: docker.synapse.org
       docker_registry_auth: fill-in-base64-encoded-user-colon-password
-      docker_container_name: cwl-sc1
+      docker_container_name: cwl-sc2
       first_gpu_device: /dev/nvidia0
       second_gpu_device: /dev/nvidia1
       cpu_set: 1-15
@@ -37,5 +38,5 @@ steps:
   aggregate:
     run:  aggregation_tool.cwl
     in:
-      value: sc1/inferences
+      value: inference/inferences
     out: [agg_out]

@@ -51,6 +51,8 @@ inputs:
     type: string
   images_crosswalk_tsv:
     type: string
+  exams_metadata:
+    type: string
   scratch_folder:
     type: string
   cpu_set:
@@ -66,6 +68,8 @@ inputs:
   docker_registry:
     type: string
   docker_registry_auth:
+    type: string
+  host_workdir:
     type: string
 
 outputs:
