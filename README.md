@@ -11,7 +11,7 @@ Edit `dm_job.cwl` to fill in the `docker_registry_auth` parameter.  Also add pat
 
 To run just one job (in this case for sub-challenge 2):
 ```
-export WORK_DIR=`pwd`
+export WORK_DIR=/path/to/workflow/files
 docker run --rm -i \
 -v ${WORK_DIR}:/workdir:rw \
 -v /var/run/docker.sock:/var/run/docker.sock \
@@ -21,7 +21,7 @@ toil-cwl-runner --defaultMemory 1G  --retryCount 0 dm_inference.cwl dm_sc2_job.c
 
 To run an ensemble:
 ```
-export WORK_DIR=`pwd`
+export WORK_DIR=/path/to/workflow/files
 docker run --rm -i \
 -v ${WORK_DIR}:/workdir:rw \
 -v /var/run/docker.sock:/var/run/docker.sock \
