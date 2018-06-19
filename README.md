@@ -7,7 +7,7 @@ git clone https://github.com/Sage-Bionetworks/DigitalMammographyEnsemble.git
 cd DigitalMammographyEnsemble
 ```
 
-Edit `dm_job.cwl` to fill in the `docker_registry_auth` parameter.  Also add paths to the images and other folders.
+Edit `dm_sc2_job.cwl` to fill in the `docker_registry_auth` parameter.  Also add paths to the images and other folders.
 
 To run just one job (in this case for sub-challenge 2):
 ```
@@ -18,6 +18,8 @@ docker run --rm -i \
 docker.synapse.org/syn5644795/docker-and-toil \
 toil-cwl-runner --defaultMemory 1G  --retryCount 0 dm_inference.cwl dm_sc2_job.cwl
 ```
+
+Note:  If necessary, `docker login docker.synapse.org` to pull the docker-and-toil image.
 
 To run an ensemble:
 ```

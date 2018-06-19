@@ -10,7 +10,7 @@ entry_point: /sc2_infer.sh
 docker_image_reference: docker.synapse.org/syn7887972/9650243/scoring@sha256:3ccbf3acf43d1e84c79028aa562e6f68cc6d20271a3b37b8168316d71ad44168
 
 docker_registry: docker.synapse.org
-docker_registry_auth: 
+docker_registry_auth: fill-in-base64-encoded-user-colon-password
 
 docker_container_name: cwl-sc2
 
