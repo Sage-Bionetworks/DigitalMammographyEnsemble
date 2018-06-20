@@ -12,6 +12,12 @@ inputs:
           - name: name
             type: string
           - name: weight
+            type: float  
+          - name: weight_r
+            type: float  
+          - name: weight_re
+            type: float  
+          - name: weight_e
             type: float
           - name: docker_reference
             type: string
@@ -23,7 +29,9 @@ outputs:
   - id: ensemble_predictions_exams
     type: File
     outputSource: aggregate/ensemble_predictions_exams
-
+  - id: output
+    type: File
+    outputSource: aggregate/output
 requirements:
  - class: ScatterFeatureRequirement
 
@@ -35,12 +43,12 @@ steps:
       - id: model
         source: "#models"
       - id: images_data_folder
-        valueFrom: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
+        source: "#images_data_folder"
       - id: images_crosswalk_tsv
-        valueFrom: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_images_crosswalk.tsv
+        source: "#images_crosswalk_tsv"
       - id: exams_metadata
-        valueFrom: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_exams_metadata.tsv
-      - id: scratch_folder
+         source: "#exams_metadata"
+     - id: scratch_folder
         valueFrom: /data/scratch0
       - id: host_workdir
         valueFrom: /home/dreamuser/DigitalMammographyEnsemble
@@ -63,7 +71,7 @@ steps:
       - id: predictions_exams
       
   aggregate:
-    run:  dummy_aggregation_tool.cwl
+    run:  aggregation_tool.cwl
     in:
       - id: models
         source: "#models"
@@ -74,3 +82,4 @@ steps:
     out:
       - id: ensemble_predictions
       - id: ensemble_predictions_exams
+      - id: output

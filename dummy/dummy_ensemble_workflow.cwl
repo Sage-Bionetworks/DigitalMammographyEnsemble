@@ -3,7 +3,7 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
-  models:
+  - id: models
     type:
       type: array
       items:
@@ -12,8 +12,18 @@ inputs:
           - name: name
             type: string
           - name: weight
+            type: float  
+          - name: weight_r
+            type: float  
+          - name: weight_re
+            type: float  
+          - name: weight_e
             type: float
-          
+  - id: images_crosswalk_tsv
+    type: string
+  - id: exams_metadata
+    type: string
+
 outputs:
   - id: ensemble_predictions
     type: File
@@ -21,22 +31,26 @@ outputs:
   - id: ensemble_predictions_exams
     type: File
     outputSource: aggregate/ensemble_predictions_exams
-  - id: output
+  - id: std_out
     type: File
-    outputSource: aggregate/output
+    outputSource: aggregate/std_out
+  - id: std_err
+    type: File
+    outputSource: aggregate/std_err
 
 requirements:
  - class: ScatterFeatureRequirement
+ - class: InlineJavascriptRequirement
 
 steps:
   inference:
-    run: dm_dummy_inference.cwl
+    run: dm_dummy_inference_tool.cwl
     scatter: model
     in:
       - id: images_crosswalk_tsv
-        valueFrom: '/workdir/SC2_single_subject_images_crosswalk.tsv'
+        source: "#images_crosswalk_tsv"
       - id: exams_metadata
-        valueFrom: '/workdir/SC2_single_subject_exams_metadata.tsv'
+        source: "#exams_metadata"
       - id: model
         source: "#models"
     out:
@@ -44,7 +58,7 @@ steps:
       - id: predictions_exams
 
   aggregate:
-    run:  dummy_aggregation_tool.cwl
+    run:  ../aggregation_tool.cwl
     in:
       - id: models
         source: "#models"
@@ -55,4 +69,5 @@ steps:
     out:
       - id: ensemble_predictions
       - id: ensemble_predictions_exams
-      - id: output
+      - id: std_out
+      - id: std_err

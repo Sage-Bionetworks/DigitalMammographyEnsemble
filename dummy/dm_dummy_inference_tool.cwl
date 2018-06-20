@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: /workdir/simple_model.py
+baseCommand: /workdir/dummy/simple_model.py
 arguments:
   - valueFrom: $(inputs.images_crosswalk_tsv)
     prefix: -i
@@ -22,6 +22,12 @@ inputs:
         - name: name
           type: string
         - name: weight
+          type: float  
+        - name: weight_r
+          type: float  
+        - name: weight_re
+          type: float  
+        - name: weight_e
           type: float  
 
 outputs:

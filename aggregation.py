@@ -22,7 +22,6 @@ def getSubjectIds(filepath):
     return result
 
 if __name__ == '__main__':
-    print "\n".join(sys.argv)
     parser = argparse.ArgumentParser()
     parser.add_argument("-m","--models", required=True, nargs="+", help="models")
     parser.add_argument("-p","--predictions", required=True, nargs="+", help="predictions")
@@ -106,8 +105,8 @@ if __name__ == '__main__':
     i=1
     for prediction_exam in args.predictions_exams[1:]:
         print(prediction_exam)
-        dummy_exam=read_tsv(prediction_exam)
-        predictionExamsContent[model_names[i]]=dummy_exam.iloc[:,1]
+        exam=read_tsv(prediction_exam)
+        predictionExamsContent[model_names[i]]=exam.iloc[:,1]
         i=i+1
     # Add a dummy column for intercept
     predictionExamsContent["intercept"]=1
@@ -118,8 +117,8 @@ if __name__ == '__main__':
     print("\n--predictions-breast:--")
     i=1
     for prediction in args.predictions[1:]:
-        dummy_exam=read_tsv(prediction)
-        predictionContent[model_names[i]]=dummy_exam.iloc[:,2]
+        exam=read_tsv(prediction)
+        predictionContent[model_names[i]]=exam.iloc[:,2]
         i=i+1
     predictionContent["intercept"]=1
     ### Calculate confidence This depends if radiologist exists or not

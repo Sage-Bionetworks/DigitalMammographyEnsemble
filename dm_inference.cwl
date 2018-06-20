@@ -53,8 +53,6 @@ inputs:
       fields:
         - name: name
           type: string
-        - name: weight
-          type: float
         - name: docker_reference
           type: string
   - id: images_data_folder
