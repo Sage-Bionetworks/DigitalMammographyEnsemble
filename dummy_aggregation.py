@@ -49,11 +49,11 @@ if __name__ == '__main__':
 
 
     weight_matrix=pd.DataFrame(weights,index=model_names)
-    ## Get for  exam level data
+    # Exam level
     weights = []
     for model in args.models:
         d=eval(model)
-        print d
+        #print d
         modelName=d['name']
         modelWeight=d['weight_e']
         #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
@@ -63,6 +63,37 @@ if __name__ == '__main__':
 
 
     weight_matrixExam=pd.DataFrame(weights,index=model_names)
+    ## Get for with radiologist
+    weights = []
+    for model in args.models:
+        d=eval(model)
+        print d
+        modelName=d['name']
+        modelWeight=d['weight_r']
+        #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
+        weights.append(modelWeight)
+        #model_names.append(modelName)
+
+
+
+    weight_matrix_r=pd.DataFrame(weights,index=model_names)
+
+    ## Get for with radiologist exam
+    weights = []
+    for model in args.models:
+        d=eval(model)
+        print d.keys()
+        modelName=d['name']
+        modelWeight=d['weight_re']
+        #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
+        weights.append(modelWeight)
+        #model_names.append(modelName)
+
+
+
+    weight_matrix_rExam=pd.DataFrame(weights,index=model_names)
+
+
     print("eren")
     ## Get a dataframe for model weights
     # set index to model_names
@@ -90,17 +121,30 @@ if __name__ == '__main__':
         predictionContent[model_names[i]]=dummy_exam.iloc[:,2]
         i=i+1
     predictionContent["intercept"]=1
-    print predictionContent
-    ### Calculate confidence
-    confidence_ensemble=predictionContent[model_names].dot(weight_matrix)
-    confidence_ensembleExam=predictionExamsContent[model_names].dot(weight_matrixExam)
-    predictionContent["ensemble"]=1-1/(1+np.exp(confidence_ensemble))
-    predictionExamsContent["ensemble"]=1-1/(1+np.exp(confidence_ensembleExam))
-    predictionExamsContent.drop(columns="intercept")
-    predictionContent.drop(columns="intercept")
-    predictionContent.to_csv('ensemble_predictions.tsv',sep="\t",index=False)
-    predictionExamsContent.to_csv('ensemble_predictions_exams.tsv',sep="\t",index=False)
-    print ('%.18f' % (1-1/(1+np.exp(confidence_ensembleExam.iloc[0,:]))))
+    ### Calculate confidence This depends if radiologist exists or not
+    if 'radiologist' in model_names:
+        print "predictions include radiologist"
+        confidence_ensemble=predictionContent[model_names].dot(weight_matrix_r)
+        confidence_ensembleExam=predictionExamsContent[model_names].dot(weight_matrix_rExam)
+        predictionContent["ensemble"]=1-1/(1+np.exp(confidence_ensemble))
+        predictionExamsContent["ensemble"]=1-1/(1+np.exp(confidence_ensembleExam))
+        predictionExamsContent.drop(columns="intercept")
+        predictionContent.drop(columns="intercept")
+        predictionContent.to_csv('ensemble_predictions.tsv',sep="\t",index=False)
+        predictionExamsContent.to_csv('ensemble_predictions_exams.tsv',sep="\t",index=False)
+        print ('%.18f' % (1-1/(1+np.exp(confidence_ensembleExam.iloc[0,:]))))
+    # If radiolgist is not among given methods
+    if 'radiologist' not in model_names:
+        print "predictions does not include radiologist"
+        confidence_ensemble=predictionContent[model_names].dot(weight_matrix)
+        confidence_ensembleExam=predictionExamsContent[model_names].dot(weight_matrixExam)
+        predictionContent["ensemble"]=1-1/(1+np.exp(confidence_ensemble))
+        predictionExamsContent["ensemble"]=1-1/(1+np.exp(confidence_ensembleExam))
+        predictionExamsContent.drop(columns="intercept")
+        predictionContent.drop(columns="intercept")
+        predictionContent.to_csv('ensemble_predictions.tsv',sep="\t",index=False)
+        predictionExamsContent.to_csv('ensemble_predictions_exams.tsv',sep="\t",index=False)
+        print ('%.18f' % (1-1/(1+np.exp(confidence_ensembleExam.iloc[0,:]))))
 
 
     # now product the output
