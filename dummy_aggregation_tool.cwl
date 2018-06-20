@@ -13,6 +13,8 @@ arguments:
   - valueFrom: $(inputs.predictions_exams)
     prefix: -e
     
+stdout: std_output.txt
+
 inputs:
   - id: models
     type:
@@ -42,5 +44,8 @@ outputs:
     type: File
     outputBinding:
       glob: ensemble_predictions_exams.tsv
-
+  - id: output
+    type: File
+    outputBinding:
+      glob: std_output.txt
 

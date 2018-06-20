@@ -25,6 +25,7 @@ def getSubjectIds(filepath):
     return result
 
 if __name__ == '__main__':
+    print "\n".join(sys.argv)
     parser = argparse.ArgumentParser()
     parser.add_argument("-m","--models", required=True, nargs="+", help="models")
     parser.add_argument("-p","--predictions", required=True, nargs="+", help="predictions")

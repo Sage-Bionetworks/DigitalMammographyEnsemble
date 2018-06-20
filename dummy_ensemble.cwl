@@ -21,6 +21,9 @@ outputs:
   - id: ensemble_predictions_exams
     type: File
     outputSource: aggregate/ensemble_predictions_exams
+  - id: output
+    type: File
+    outputSource: aggregate/output
 
 requirements:
  - class: ScatterFeatureRequirement
@@ -52,4 +55,4 @@ steps:
     out:
       - id: ensemble_predictions
       - id: ensemble_predictions_exams
-
+      - id: output
