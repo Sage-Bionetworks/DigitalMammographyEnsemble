@@ -1,4 +1,4 @@
-executed-models:
+executed_models:
   - name: sub-9650054
     weight: 3.20175294864353
     weight_r: 3.5418190850458
@@ -38,22 +38,22 @@ precomputed_predictions:
     weight_re: 2.5302607501146
     weight_e: 2.23417662742951
     predictions: 
-      - class: File
-      - path: ../predictions/breast/9646823.tsv
+      class: File
+      path: ../predictions/breast/9646823.tsv
     predictions_exams: 
-      - class: File
-      - path: ../predictions/exam/9646823.tsv
+      class: File
+      path: ../predictions/exam/9646823.tsv
   - name: sub-9648211
     weight: 3.20175294864353
     weight_r: 3.5418190850458
     weight_re: 2.5302607501146
     weight_e: 2.23417662742951
     predictions:  
-      - class: File
-      - path: ../predictions/breast/9648211.tsv
+      class: File
+      path: ../predictions/breast/9648211.tsv
     predictions_exams:
-      - class: File
-      - path: ../predictions/exam/9648211.tsv
+      class: File
+      path: ../predictions/exam/9648211.tsv
     
 intercept:
   weight: -9.760418753

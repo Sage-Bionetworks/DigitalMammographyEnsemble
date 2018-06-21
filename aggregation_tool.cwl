@@ -6,7 +6,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: /workdir/aggregation.py
 arguments:
-  - valueFrom: $(inputs.executed-models)
+  - valueFrom: $(inputs.executed_models)
     prefix: -m
   - valueFrom: $(inputs.predictions)
     prefix: -p
@@ -14,14 +14,16 @@ arguments:
     prefix: -e
   - valueFrom: $(inputs.precomputed_predictions)
     prefix: -q
-  - valueFrom: $(inputs.intercept)
-    prefix: -i
+  - prefix: -i
+    valueFrom: $(inputs.intercept.weight), $(inputs.intercept.weight_r), $(inputs.intercept.weight_re), $(inputs.intercept.weight_e)
+
+
     
 stdout: aggregation_out.txt
 stderr: aggregation_err.txt
 
 inputs:
-  - id: executed-models
+  - id: executed_models
     type:
       type: array
       items:
@@ -82,7 +84,6 @@ inputs:
         - name: weight_e
           type: float  
       
-
 outputs:
   - id: ensemble_predictions
     type: File

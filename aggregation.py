@@ -40,8 +40,8 @@ if __name__ == '__main__':
     merged_inputs = []
     for i in range(n):
         d=eval(args.models[i])
-        d.put('predictions', args.predictions[i])
-        d.put('predictions_exams', args.predictions_exams[i])
+        d['predictions']=args.predictions[i]
+        d['predictions_exams']=args.predictions_exams[i]
         merged_inputs.append(d)
 
     for pp in args.precomputed_predictions:
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     intercept = eval(args.intercept)
     if len(intercept)!=4:
         raise Exception("Excpeted four values for intercept but found "+str(intercept))
-    merged_inputs.add({'name':'intercept', 
+    merged_inputs.append({'name':'intercept', 
                        'weight':intercept['weight'],
                        'weight_r':intercept['weight_r'],
                        'weight_re':intercept['weight_re'],
