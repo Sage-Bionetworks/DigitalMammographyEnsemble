@@ -6,18 +6,22 @@ cwlVersion: v1.0
 class: CommandLineTool
 baseCommand: /workdir/aggregation.py
 arguments:
-  - valueFrom: $(inputs.models)
+  - valueFrom: $(inputs.executed-models)
     prefix: -m
   - valueFrom: $(inputs.predictions)
     prefix: -p
   - valueFrom: $(inputs.predictions_exams)
     prefix: -e
+  - valueFrom: $(inputs.precomputed_predictions)
+    prefix: -q
+  - valueFrom: $(inputs.intercept)
+    prefix: -i
     
 stdout: aggregation_out.txt
 stderr: aggregation_err.txt
 
 inputs:
-  - id: models
+  - id: executed-models
     type:
       type: array
       items:
@@ -38,10 +42,46 @@ inputs:
     type:
       type: array
       items: File
+
   - id: predictions_exams
     type:
       type: array
       items: File
+
+  - id: precomputed_predictions
+    type:
+      type: array
+      items:
+        type: record
+        fields:
+          - name: name
+            type: string
+          - name: weight
+            type: float
+          - name: weight_r
+            type: float
+          - name: weight_re
+            type: float
+          - name: weight_e
+            type: float
+          - name: predictions
+            type: File
+          - name: predictions_exams
+            type: File
+
+  - id: intercept
+    type:
+      type: record
+      fields:
+        - name: weight
+          type: float  
+        - name: weight_r
+          type: float  
+        - name: weight_re
+          type: float  
+        - name: weight_e
+          type: float  
+      
 
 outputs:
   - id: ensemble_predictions

@@ -23,74 +23,68 @@ def getSubjectIds(filepath):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m","--models", required=True, nargs="+", help="models")
-    parser.add_argument("-p","--predictions", required=True, nargs="+", help="predictions")
-    parser.add_argument("-e","--predictions_exams", required=True, nargs="+", help="predictions-exams")
+    parser.add_argument("-m","--models", required=False, nargs="+", help="models")
+    parser.add_argument("-p","--predictions", required=False, nargs="+", help="predictions")
+    parser.add_argument("-e","--predictions_exams", required=False, nargs="+", help="predictions-exams")
+    parser.add_argument("-q","--precomputed-predictions", required=False, nargs="+", help="precomputed-predictions")
+    parser.add_argument("-i","--intercept", required=True, help="intercept")
     args = parser.parse_args()
+    
+    n = len(args.models)
+    if len(args.predictions) != n:
+        raise Exception('models has length '+str(n)+' but predictions has length '+str(len(args.predictions)))
+    if len(args.predictions_exams) != n:
+        raise Exception('models has length '+str(n)+' but predictions_exams has length '+str(len(args.predictions_exams)))
 
+    # combine results for models that were run with results for precomputed models
+    merged_inputs = []
+    for i in range(n):
+        d=eval(args.models[i])
+        d.put('predictions', args.predictions[i])
+        d.put('predictions_exams', args.predictions_exams[i])
+        merged_inputs.append(d)
 
-    #print(args.models)
-
-    print("\n--predictions:--")
-
-
-    print("\n--Models:--")
+    for pp in args.precomputed_predictions:
+        merged_inputs.append(eval(pp))
+        
+    intercept = eval(args.intercept)
+    if len(intercept)!=4:
+        raise Exception("Excpeted four values for intercept but found "+str(intercept))
+    merged_inputs.add({'name':'intercept', 
+                       'weight':intercept['weight'],
+                       'weight_r':intercept['weight_r'],
+                       'weight_re':intercept['weight_re'],
+                       'weight_e':intercept['weight_e']
+                       })
 
     model_names=[]
     weights = []
-    for model in args.models:
-        d=eval(model)
+    for d in merged_inputs:
         modelName=d['name']
         modelWeight=d['weight']
-        #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
         weights.append(modelWeight)
         model_names.append(modelName)
-
-
 
     weight_matrix=pd.DataFrame(weights,index=model_names)
     # Exam level
     weights = []
-    for model in args.models:
-        d=eval(model)
-        #print d
-        modelName=d['name']
+    for d in merged_inputs:
         modelWeight=d['weight_e']
-        #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
         weights.append(modelWeight)
-        #model_names.append(modelName)
-
-
-
     weight_matrixExam=pd.DataFrame(weights,index=model_names)
+    
     ## Get for with radiologist
     weights = []
-    for model in args.models:
-        d=eval(model)
-        print d
-        modelName=d['name']
+    for d in merged_inputs:
         modelWeight=d['weight_r']
-        #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
         weights.append(modelWeight)
-        #model_names.append(modelName)
-
-
-
     weight_matrix_r=pd.DataFrame(weights,index=model_names)
 
     ## Get for with radiologist exam
     weights = []
-    for model in args.models:
-        d=eval(model)
-        print d.keys()
-        modelName=d['name']
+    for d in merged_inputs:
         modelWeight=d['weight_re']
-        #print('Model Name: '+str(modelName)+', weight: '+str(modelWeight))
         weights.append(modelWeight)
-        #model_names.append(modelName)
-
-
-
     weight_matrix_rExam=pd.DataFrame(weights,index=model_names)
 
 

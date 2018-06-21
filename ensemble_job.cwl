@@ -69,9 +69,4 @@ models:
     weight_re: 8.67925172025
     weight_e: 8.8835717166
     docker_reference: docker.synapse.org/syn7887972/9650300/scoring@sha256:
-#  - name: submission-intercept
-#    weight: -9.760418753
-#    weight_r: -9.04168517207
-#    weight_re: -9.91406107949
-#    weight_e: -9.39316702699
-#    docker_reference: docker.synapse.org/syn7887972/intercept/scoring@sha256:    
+   

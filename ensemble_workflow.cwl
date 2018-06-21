@@ -73,7 +73,7 @@ steps:
   aggregate:
     run:  aggregation_tool.cwl
     in:
-      - id: models
+      - id: executed-models
         source: "#models"
       - id: predictions
         source: "#inference/predictions"

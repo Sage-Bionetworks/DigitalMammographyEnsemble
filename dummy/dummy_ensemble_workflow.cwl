@@ -3,7 +3,7 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
-  - id: models
+  - id: models-to-run
     type:
       type: array
       items:
@@ -52,7 +52,7 @@ steps:
       - id: exams_metadata
         source: "#exams_metadata"
       - id: model
-        source: "#models"
+        source: "#models-to-run"
     out:
       - id: predictions
       - id: predictions_exams
@@ -60,8 +60,8 @@ steps:
   aggregate:
     run:  ../aggregation_tool.cwl
     in:
-      - id: models
-        source: "#models"
+      - id: executed-models
+        source: "#models-to-run"
       - id: predictions
         source: "#inference/predictions"
       - id: predictions_exams
