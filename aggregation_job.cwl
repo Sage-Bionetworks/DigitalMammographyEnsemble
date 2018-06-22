@@ -17,19 +17,19 @@ executed_models:
     
 predictions:
   - class: File
-    path: ../predictions/breast/9650054.tsv
+    path: predictions/breast/9650054.tsv
   - class: File
-    path: ../predictions/breast/9650055.tsv
+    path: predictions/breast/9650055.tsv
   - class: File
-    path: ../predictions/breast/9646823.tsv
+    path: predictions/breast/9646823.tsv
  
 predictions_exams:
   - class: File
-    path: ../predictions/exam/9650054.tsv
+    path: predictions/exam/9650054.tsv
   - class: File
-    path: ../predictions/exam/9650055.tsv
+    path: predictions/exam/9650055.tsv
   - class: File
-    path: ../predictions/exam/9646823.tsv
+    path: predictions/exam/9646823.tsv
 
 precomputed_predictions:
   - name: sub-9646823
@@ -39,10 +39,10 @@ precomputed_predictions:
     weight_e: 2.23417662742951
     predictions: 
       class: File
-      path: ../predictions/breast/9646823.tsv
+      path: predictions/breast/9646823.tsv
     predictions_exams: 
       class: File
-      path: ../predictions/exam/9646823.tsv
+      path: predictions/exam/9646823.tsv
   - name: sub-9648211
     weight: 3.20175294864353
     weight_r: 3.5418190850458
@@ -50,10 +50,10 @@ precomputed_predictions:
     weight_e: 2.23417662742951
     predictions:  
       class: File
-      path: ../predictions/breast/9648211.tsv
+      path: predictions/breast/9648211.tsv
     predictions_exams:
       class: File
-      path: ../predictions/exam/9648211.tsv
+      path: predictions/exam/9648211.tsv
     
 intercept:
   weight: -9.760418753
