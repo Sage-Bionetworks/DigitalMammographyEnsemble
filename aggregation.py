@@ -27,9 +27,12 @@ if __name__ == '__main__':
     parser.add_argument("-p","--predictions", required=False, nargs="+", help="predictions")
     parser.add_argument("-e","--predictions_exams", required=False, nargs="+", help="predictions-exams")
     parser.add_argument("-q","--precomputed-predictions", required=False, nargs="+", help="precomputed-predictions")
-    parser.add_argument("-i","--intercept", required=True, help="intercept")
+    parser.add_argument("-i","--intercept_weight", required=True, help="intercept_weight")
+    parser.add_argument("-ir","--intercept_weight_r", required=True, help="intercept_weight_r")
+    parser.add_argument("-ire","--intercept_weight_re", required=True, help="intercept_weight_re")
+    parser.add_argument("-ie","--intercept_weight_e", required=True, help="intercept_weight_e")
     args = parser.parse_args()
-    
+        
     n = len(args.models)
     if len(args.predictions) != n:
         raise Exception('models has length '+str(n)+' but predictions has length '+str(len(args.predictions)))
@@ -44,24 +47,30 @@ if __name__ == '__main__':
         d['predictions_exams']=args.predictions_exams[i]
         merged_inputs.append(d)
 
-    for pp in args.precomputed_predictions:
-        merged_inputs.append(eval(pp))
+    for ppString in args.precomputed_predictions:
+        pp = eval(ppString)
+        d = {}
+        d['name']=pp['name']
+        d['weight']=pp['weight']
+        d['weight_r']=pp['weight_r']
+        d['weight_re']=pp['weight_re']
+        d['weight_e']=pp['weight_e']
+        d['predictions']=pp['predictions']['path']
+        d['predictions_exams']=pp['predictions_exams']['path']
+        merged_inputs.append(d)
         
-    intercept = eval(args.intercept)
-    if len(intercept)!=4:
-        raise Exception("Excpeted four values for intercept but found "+str(intercept))
     merged_inputs.append({'name':'intercept', 
-                       'weight':intercept['weight'],
-                       'weight_r':intercept['weight_r'],
-                       'weight_re':intercept['weight_re'],
-                       'weight_e':intercept['weight_e']
+                       'weight':args.intercept_weight,
+                       'weight_r':args.intercept_weight_r,
+                       'weight_re':args.intercept_weight_re,
+                       'weight_e':args.intercept_weight_e
                        })
 
     model_names=[]
     weights = []
     for d in merged_inputs:
         modelName=d['name']
-        modelWeight=d['weight']
+        modelWeight=float(d['weight'])
         weights.append(modelWeight)
         model_names.append(modelName)
 
@@ -69,52 +78,58 @@ if __name__ == '__main__':
     # Exam level
     weights = []
     for d in merged_inputs:
-        modelWeight=d['weight_e']
+        modelWeight=float(d['weight_e'])
         weights.append(modelWeight)
     weight_matrixExam=pd.DataFrame(weights,index=model_names)
     
     ## Get for with radiologist
     weights = []
     for d in merged_inputs:
-        modelWeight=d['weight_r']
+        modelWeight=float(d['weight_r'])
         weights.append(modelWeight)
     weight_matrix_r=pd.DataFrame(weights,index=model_names)
 
     ## Get for with radiologist exam
     weights = []
     for d in merged_inputs:
-        modelWeight=d['weight_re']
+        modelWeight=float(d['weight_re'])
         weights.append(modelWeight)
     weight_matrix_rExam=pd.DataFrame(weights,index=model_names)
-
 
     print("eren")
     ## Get a dataframe for model weights
     # set index to model_names
 
-
-    predictionExamsContent = read_tsv(args.predictions_exams[0])
+    predictionExamsContent = read_tsv(merged_inputs[0]['predictions_exams'])
     predictionExamsContent.rename(columns={'confidence':model_names[0]},inplace=True)
     print("\n--predictions-exams:--")
     i=1
-    for prediction_exam in args.predictions_exams[1:]:
-        print(prediction_exam)
-        exam=read_tsv(prediction_exam)
-        predictionExamsContent[model_names[i]]=exam.iloc[:,1]
+    for mi in merged_inputs[1:]:
+        if model_names[i] != mi['name']:
+            raise Exception("Expected "+model_names[i]+" but found "+mi['name'])
+        if (mi['name']!='intercept'):
+            prediction_exam = mi['predictions_exams']
+            print(prediction_exam)
+            exam=read_tsv(prediction_exam)
+            predictionExamsContent[model_names[i]]=exam.iloc[:,1]
         i=i+1
     # Add a dummy column for intercept
     predictionExamsContent["intercept"]=1
     ## Next get breast level data frame
 
-    predictionContent = read_tsv(args.predictions[0])
+    predictionContent = read_tsv(merged_inputs[0]['predictions'])
     predictionContent.rename(columns={'confidence':model_names[0]},inplace=True)
     print("\n--predictions-breast:--")
     i=1
-    for prediction in args.predictions[1:]:
-        exam=read_tsv(prediction)
-        predictionContent[model_names[i]]=exam.iloc[:,2]
+    for mi in merged_inputs[1:]:
+        if model_names[i] != mi['name']:
+            raise Exception("Expected "+model_names[i]+" but found "+mi['name'])
+        if (mi['name']!='intercept'):
+            prediction = mi['predictions']
+            exam=read_tsv(prediction)
+            predictionContent[model_names[i]]=exam.iloc[:,2]
         i=i+1
-    predictionContent["intercept"]=1
+    predictionContent["intercept"]=float(1)
     ### Calculate confidence This depends if radiologist exists or not
     if 'radiologist' in model_names:
         print "predictions include radiologist"

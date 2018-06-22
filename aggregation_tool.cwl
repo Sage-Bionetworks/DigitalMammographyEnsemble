@@ -15,7 +15,13 @@ arguments:
   - valueFrom: $(inputs.precomputed_predictions)
     prefix: -q
   - prefix: -i
-    valueFrom: $(inputs.intercept.weight), $(inputs.intercept.weight_r), $(inputs.intercept.weight_re), $(inputs.intercept.weight_e)
+    valueFrom: $(inputs.intercept.weight)
+  - prefix: -ir
+    valueFrom: $(inputs.intercept.weight_r)
+  - prefix: -ire
+    valueFrom: $(inputs.intercept.weight_re)
+  - prefix: -ie
+    valueFrom: $(inputs.intercept.weight_e)
 
 
     
