@@ -3,7 +3,7 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
-  models:
+  - id: models
     type:
       type: array
       items:
@@ -21,6 +21,40 @@ inputs:
             type: float
           - name: docker_reference
             type: string
+
+  - id: precomputed_predictions
+    type:
+      type: array
+      items:
+        type: record
+        fields:
+          - name: name
+            type: string
+          - name: weight
+            type: float
+          - name: weight_r
+            type: float
+          - name: weight_re
+            type: float
+          - name: weight_e
+            type: float
+          - name: predictions
+            type: File
+          - name: predictions_exams
+            type: File
+
+  - id: intercept
+    type:
+      type: record
+      fields:
+        - name: weight
+          type: float  
+        - name: weight_r
+          type: float  
+        - name: weight_re
+          type: float  
+        - name: weight_e
+          type: float  
 
 outputs:
   - id: ensemble_predictions
