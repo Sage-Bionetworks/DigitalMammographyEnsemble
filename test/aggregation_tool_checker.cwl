@@ -4,7 +4,7 @@
 #
 cwlVersion: v1.0
 class: CommandLineTool
-baseCommand: /workdir/aggregation_tool_checker.py
+baseCommand: /workdir/test/aggregation_tool_checker.py
 arguments:
   - valueFrom: $(inputs.predictions_actual)
     prefix: -pa

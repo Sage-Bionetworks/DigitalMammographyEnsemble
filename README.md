@@ -14,10 +14,12 @@ docker run --rm -i \
 -v ${WORK_DIR}:/workdir:rw \
 -v /var/run/docker.sock:/var/run/docker.sock \
 docker.synapse.org/syn5644795/docker-and-toil \
-toil-cwl-runner --defaultMemory 1G  --defaultDisk 1M --retryCount 0 aggregation_tool.cwl aggregation_job.cwl
+toil-cwl-runner --defaultMemory 1G  --defaultDisk 1M --retryCount 0 \
+ test/aggregation_checker_workflow.cwl test/aggregation_checker_job.cwl
+
 ```
 
-Edit `dm_sc2_job.cwl` to fill in the `docker_registry_auth` parameter.  Also add paths to the images and other folders.
+Now, edit `dm_sc2_job.cwl` to fill in the `docker_registry_auth` parameter.  Also add paths to the images and other folders.
 
 To run just one job (in this case for sub-challenge 2):
 ```

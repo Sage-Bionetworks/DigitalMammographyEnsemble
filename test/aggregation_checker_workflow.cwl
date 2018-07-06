@@ -77,7 +77,7 @@ outputs:
 
 steps:
   aggregation:
-    run: aggregation_tool.cwl
+    run: ../aggregation_tool.cwl
     in:
       - id: executed_models
         source: "#executed_models"
