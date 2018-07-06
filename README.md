@@ -28,7 +28,7 @@ docker run --rm -i \
 -v ${WORK_DIR}:/workdir:rw \
 -v /var/run/docker.sock:/var/run/docker.sock \
 docker.synapse.org/syn5644795/docker-and-toil \
-toil-cwl-runner --defaultMemory 1G  --retryCount 0 dm_inference.cwl dm_sc2_job.cwl
+toil-cwl-runner --defaultMemory 1G  --defaultDisk 1M --retryCount 0 dm_inference.cwl dm_sc2_job.cwl
 ```
 
 Note:  If necessary, `docker login docker.synapse.org` to pull the docker-and-toil image.
