@@ -1,3 +1,4 @@
+
 executed_models:
   - name: submission-9650054
     weight: 3.20175294864
@@ -122,5 +123,12 @@ intercept:
   weight_r: -9.04168517207
   weight_re: -9.91406107949
   weight_e: -9.39316702699
-  
-    
+
+predictions_expected:
+  class: File
+  path:  /workdir/GH_validation_breast.csv
+predictions_exams_expected:
+  class: File
+  path: /workdir/GH_validation_exam.csv
+ 
+   

@@ -1,30 +1,9 @@
 #!/usr/bin/env cwl-runner
 #
-# This tool aggregates results
+# this workflow runs the aggregation tool and verifies the output
 #
 cwlVersion: v1.0
-class: CommandLineTool
-baseCommand: /workdir/aggregation.py
-arguments:
-  - valueFrom: $(inputs.executed_models)
-    prefix: -m
-  - valueFrom: $(inputs.predictions)
-    prefix: -p
-  - valueFrom: $(inputs.predictions_exams)
-    prefix: -e
-  - valueFrom: $(inputs.precomputed_predictions)
-    prefix: -q
-  - prefix: -i
-    valueFrom: $(inputs.intercept.weight)
-  - prefix: -ir
-    valueFrom: $(inputs.intercept.weight_r)
-  - prefix: -ire
-    valueFrom: $(inputs.intercept.weight_re)
-  - prefix: -ie
-    valueFrom: $(inputs.intercept.weight_e)
-
-stdout: aggregation_out.txt
-stderr: aggregation_err.txt
+class: Workflow
 
 inputs:
   - id: executed_models
@@ -43,17 +22,14 @@ inputs:
             type: float  
           - name: weight_e
             type: float  
-
   - id: predictions
     type:
       type: array
       items: File
-
   - id: predictions_exams
     type:
       type: array
       items: File
-
   - id: precomputed_predictions
     type:
       type: array
@@ -74,7 +50,6 @@ inputs:
             type: File
           - name: predictions_exams
             type: File
-
   - id: intercept
     type:
       type: record
@@ -86,23 +61,48 @@ inputs:
         - name: weight_re
           type: float  
         - name: weight_e
-          type: float  
+          type: float
+  - id: predictions_expected
+    type: File
+  - id: predictions_exams_expected
+    type: File
 
 outputs:
-  - id: ensemble_predictions
-    type: File
-    outputBinding:
-      glob: ensemble_predictions.tsv
-  - id: ensemble_predictions_exams
-    type: File
-    outputBinding:
-      glob: ensemble_predictions_exams.tsv
   - id: std_out
     type: File
-    outputBinding:
-      glob: aggregation_out.txt
+    outputSource: check/std_out
   - id: std_err
     type: File
-    outputBinding:
-      glob: aggregation_err.txt
+    outputSource: check/std_err
 
+steps:
+  aggregation:
+    run: aggregation_tool.cwl
+    in:
+      - id: executed_models
+        source: "#executed_models"
+      - id: predictions
+        source: "#predictions"
+      - id: predictions_exams
+        source: "#predictions_exams"
+      - id: precomputed_predictions
+        source: "#precomputed_predictions"
+      - id: intercept
+        source: "#intercept"
+    out:
+      - id: ensemble_predictions
+      - id: ensemble_predictions_exams
+  check:
+    run: aggregation_tool_checker.cwl
+    in:
+      - id: predictions_actual
+        source: "#aggregation/ensemble_predictions"
+      - id: predictions_exams_actual
+        source: "#aggregation/ensemble_predictions_exams"
+      - id: predictions_expected
+        source: "#predictions_expected"
+      - id: predictions_exams_expected
+        source: "#predictions_exams_expected"
+    out:
+      - id: std_out
+      - id: std_err
