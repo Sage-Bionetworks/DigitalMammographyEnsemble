@@ -24,13 +24,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     predictions_actual=read_tsv(args.predictions_actual)
     predictions_expected=read_csv(args.predictions_expected)
-    print("columns in actual predictions: "+str(predictions_actual))
-    print("columns in expected predictions: "+str(predictions_expected))
     assert_frame_equal(predictions_actual, predictions_expected)
     
     predictions_exams_actual=read_tsv(args.predictions_exams_actual)
     predictions_exams_expected=read_csv(args.predictions_exams_expected)
-    print("columns in actual exams-level predictions: "+str(predictions_exams_actual))
-    print("columns in expected exams-level predictions: "+str(predictions_exams_expected))
 
     assert_frame_equal(predictions_exams_actual, predictions_exams_expected)

@@ -96,20 +96,17 @@ if __name__ == '__main__':
         weights.append(modelWeight)
     weight_matrix_rExam=pd.DataFrame(weights,index=model_names)
 
-    print("eren")
     ## Get a dataframe for model weights
     # set index to model_names
 
     predictionExamsContent = read_tsv(merged_inputs[0]['predictions_exams'])
     predictionExamsContent.rename(columns={'confidence':model_names[0]},inplace=True)
-    print("\n--predictions-exams:--")
     i=1
     for mi in merged_inputs[1:]:
         if model_names[i] != mi['name']:
             raise Exception("Expected "+model_names[i]+" but found "+mi['name'])
         if (mi['name']!='intercept'):
             prediction_exam = mi['predictions_exams']
-            print(prediction_exam)
             exam=read_tsv(prediction_exam)
             predictionExamsContent[model_names[i]]=exam.iloc[:,1]
         i=i+1
@@ -119,7 +116,6 @@ if __name__ == '__main__':
 
     predictionContent = read_tsv(merged_inputs[0]['predictions'])
     predictionContent.rename(columns={'confidence':model_names[0]},inplace=True)
-    print("\n--predictions-breast:--")
     i=1
     for mi in merged_inputs[1:]:
         if model_names[i] != mi['name']:
@@ -137,7 +133,7 @@ if __name__ == '__main__':
         confidence_ensembleExam=predictionExamsContent[model_names].dot(weight_matrix_rExam)
     # If radiolgist is not among given methods
     if 'radiologist' not in model_names:
-        print "predictions does not include radiologist"
+        print "predictions do not include radiologist"
         confidence_ensemble=predictionContent[model_names].dot(weight_matrix)
         confidence_ensembleExam=predictionExamsContent[model_names].dot(weight_matrixExam)
     predictionContent["ensemble"]=1-1/(1+np.exp(confidence_ensemble))
