@@ -1,5 +1,5 @@
 model:
-  name: 9650243
+  name: submission-9650243
   docker_reference: docker.synapse.org/syn7887972/9650243/scoring@sha256:3ccbf3acf43d1e84c79028aa562e6f68cc6d20271a3b37b8168316d71ad44168
 
 # These are paths on the host machine

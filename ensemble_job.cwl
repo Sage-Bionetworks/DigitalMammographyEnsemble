@@ -1,6 +1,7 @@
-images_crosswalk_tsv: /workdir/dummy/SC2_single_subject_images_crosswalk.tsv
-exams_metadata: /workdir/dummy/SC2_single_subject_exams_metadata.tsv
+# These are paths on the host machine
 images_data_folder: /data/data/dm_challenge_model_test_datasets/dcm/SC2_single_subject
+images_crosswalk_tsv: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_images_crosswalk.tsv
+exams_metadata: /data/data/dm_challenge_model_test_datasets/metadata/SC2_single_subject_exams_metadata.tsv
 
 models:
   - name: submission-9646823

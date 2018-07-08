@@ -3,6 +3,13 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
+  - id: exams_metadata
+    type: string  
+  - id: images_crosswalk_tsv
+    type: string
+  - id: images_data_folder
+    type: string
+
   - id: models
     type:
       type: array
@@ -54,8 +61,8 @@ inputs:
         - name: weight_re
           type: float  
         - name: weight_e
-          type: float  
-
+          type: float
+        
 outputs:
   - id: ensemble_predictions
     type: File
@@ -63,9 +70,13 @@ outputs:
   - id: ensemble_predictions_exams
     type: File
     outputSource: aggregate/ensemble_predictions_exams
-  - id: output
+  - id: std_out
     type: File
-    outputSource: aggregate/output
+    outputSource: aggregate/std_out
+  - id: std_err
+    type: File
+    outputSource: aggregate/std_err
+    
 requirements:
  - class: ScatterFeatureRequirement
 
@@ -81,8 +92,8 @@ steps:
       - id: images_crosswalk_tsv
         source: "#images_crosswalk_tsv"
       - id: exams_metadata
-         source: "#exams_metadata"
-     - id: scratch_folder
+        source: "#exams_metadata"
+      - id: scratch_folder
         valueFrom: /data/scratch0
       - id: host_workdir
         valueFrom: /home/dreamuser/DigitalMammographyEnsemble
@@ -105,10 +116,14 @@ steps:
       - id: predictions_exams
       
   aggregate:
-    run:  aggregation_tool.cwl
+    run: aggregation_tool.cwl
     in:
       - id: executed_models
         source: "#models"
+      - id: precomputed_predictions
+        source: "#precomputed_predictions"
+      - id: intercept
+        source: "#intercept"
       - id: predictions
         source: "#inference/predictions"
       - id: predictions_exams
@@ -116,4 +131,6 @@ steps:
     out:
       - id: ensemble_predictions
       - id: ensemble_predictions_exams
-      - id: output
+      - id: std_out
+      - id: std_err
+      
