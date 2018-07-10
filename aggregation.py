@@ -23,10 +23,10 @@ def getSubjectIds(filepath):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m","--models", required=False, nargs="+", help="models")
-    parser.add_argument("-p","--predictions", required=False, nargs="+", help="predictions")
-    parser.add_argument("-e","--predictions_exams", required=False, nargs="+", help="predictions-exams")
-    parser.add_argument("-q","--precomputed-predictions", required=False, nargs="+", help="precomputed-predictions")
+    parser.add_argument("-m","--models", required=False, nargs="*", help="models")
+    parser.add_argument("-p","--predictions", required=False, nargs="*", help="predictions")
+    parser.add_argument("-e","--predictions_exams", required=False, nargs="*", help="predictions-exams")
+    parser.add_argument("-q","--precomputed-predictions", required=False, nargs="*", help="precomputed-predictions")
     parser.add_argument("-i","--intercept_weight", required=True, help="intercept_weight")
     parser.add_argument("-ir","--intercept_weight_r", required=True, help="intercept_weight_r")
     parser.add_argument("-ire","--intercept_weight_re", required=True, help="intercept_weight_re")
