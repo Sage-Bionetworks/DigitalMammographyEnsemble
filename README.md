@@ -38,7 +38,9 @@ docker run --rm -i \
 -v ${WORK_DIR}:/workdir:rw \
 -v /var/run/docker.sock:/var/run/docker.sock \
 docker.synapse.org/syn5644795/docker-and-toil \
-toil-cwl-runner --defaultMemory 200G  --defaultDisk 1M --retryCount 0 ensemble_workflow.cwl ensemble_job.cwl
+toil-cwl-runner --defaultMemory 200G  --maxMemory 200G --defaultDisk 1M --retryCount 0 \
+--defaultCores 22 --maxCores 22 \
+ensemble_workflow.cwl ensemble_job.cwl
 ```
 
 Note: `docker.synapse.org/syn5644795/docker-and-toil` was built from the Dockerfile in this project by running:
