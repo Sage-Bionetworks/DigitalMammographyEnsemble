@@ -1,0 +1,53 @@
+#
+# This is a work in progress, not yet done.  See 'docker-compose-aggregation-test.yml' for a 
+# working version, not based on mesos.
+#
+version: '3'
+services:
+  zookeeper-exhibitor:
+    image:
+      netflixoss/exhibitor:1.5.2
+    network_mode: "host"
+
+  mesos-head:
+    image:
+      mesosphere/mesos-master:0.28.0-2.0.16.ubuntu1404
+    volumes:
+    - ${WORK_DIR}/log/mesos:/var/log/mesos:rw
+    - ${WORK_DIR}/tmp/mesos:/var/tmp/mesos:rw
+    environment:
+    - MESOS_PORT=5050
+    - MESOS_ZK=zk://10.0.0.5:2181/mesos
+    - MESOS_QUORUM=1
+    - MESOS_REGISTRY=in_memory
+    - MESOS_LOG_DIR=/var/log/mesos
+    - MESOS_WORK_DIR=/var/tmp/mesos
+    network_mode: "host"
+  
+  mesos-slave:
+    image:
+      mesosphere/mesos-slave:0.28.0-2.0.16.ubuntu1404
+    environment:
+    - MESOS_PORT=5051
+    - MESOS_MASTER=zk://10.0.0.5:2181/mesos
+    - MESOS_SWITCH_USER=0
+    - MESOS_CONTAINERIZERS=docker,mesos
+    - MESOS_LOG_DIR=/var/log/mesos
+    - MESOS_WORK_DIR=/var/tmp/mesos
+    volumes:
+    - "${WORK_DIR}/log/mesos:/var/log/mesos"
+    - "${WORK_DIR}/tmp/mesos:/var/tmp/mesos"
+    - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host"
+    privileged: true 
+   
+  aggregation-test:
+    image:
+      docker.synapse.org/syn5644795/docker-and-toil
+    volumes:
+    - ${WORK_DIR}:/workdir:rw
+    environment: []
+    command: |
+      toil-cwl-runner --defaultMemory 1G  --defaultDisk 1M --retryCount 0 
+      --mesosMaster 10.0.0.5:2181 
+      test/aggregation_checker_workflow.cwl test/aggregation_checker_job.cwl
